@@ -1,0 +1,3 @@
+tqplcrabout_homepage:
+    path:     /about
+    defaults: { _controller: tqplcraboutBundle:Default:index }

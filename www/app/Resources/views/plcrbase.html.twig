@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block metatitle %}{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+  </head>
+  <body>
+    <link href="{{ asset('css/plcr.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/menu.css') }}" rel="stylesheet" type="text/css" />
+    {% block stylesheets %}
+    {% endblock %}
+    <script src="http://{{app.request.host}}/jquery10/jquery/jquery.js" type="text/javascript"></script>
+    <!--<script src="{{ asset('js/jquery.floatThead.js') }}" type="text/javascript"></script>-->
+    {% block javascripts %}
+    {% endblock %}
+    <div id="pagecontainer">
+      <div id="headercontainer">
+      <img src="{{ asset('img/plc.png') }}" alt="plc"/>
+      <img src="{{ asset('img/plcLetters.png') }}" alt="plcletters"/>
+      {% block headercontainer %}
+      {% endblock %}
+      </div>
+      <div id="maincontainer">
+        <div id="lsidebar">
+          {% block lsidebar %}
+          {% endblock %}
+        </div>
+        <div id="rsidebar">
+          {% block rsidebar %}
+          {% endblock %}
+        </div>
+        <div id="centralcontainer">
+          <div id="menu">
+            <div id="menu_l">
+              <div id="menucontainer">
+                <ul>
+                  <li>
+                    <a href="{{ path('tqplcrlistings_lastread') }}">[Ultima lectura]</a>
+                  </li>
+                  <li>
+                    <a href="{{ path('tqplcrlistings_readsquery') }}">[Consulta lectura diaria]</a>
+                  </li>
+                </ul>
+                {% block menu %}
+                {% endblock %}
+              </div>
+            </div>
+          </div>
+          <div id="bodycontainer">
+            <div id="bodycontent">
+              {% block body %}
+              {% endblock %}
+            </div>
+          </div>
+        </div> <!-- centralcontainer -->
+      </div> <!--maincontainer -->
+      <div id="footer">
+        <p>Sistema de reportes plc</p>
+        {% block footer %}
+        {% endblock %}
+      </div>
+      <div style="clear: both;"></div>
+    </div> <!-- pagecontainer -->
+  </body>
+</html>

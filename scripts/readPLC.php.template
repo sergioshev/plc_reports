@@ -1,0 +1,59 @@
+# vim: syntax=php
+<?php
+require_once('<%%PHP_MODBUS_LIB%%>/ModbusMaster.php');
+require_once('<%%PHP_MODBUS_LIB%%>/PhpType.php');
+
+class plcSlot {
+  private $host = null;
+  private $addr = null;
+  private $words = 0;
+  private $mb = null;
+
+  function __construct($host=null, $addr=null, $words=0) {
+    $this->host = $host;
+    $this->addr = $addr;
+    $this->words = $words;
+    if (!empty($host)) {
+      $this->mb = new ModbusMaster($host, "TCP");
+    }
+  }
+
+  private function __combineBytes($bytes) {
+    if (empty($bytes)) {
+      return 0;
+    } else {
+      $shift_bits = (count($bytes)-1)*8;
+      $elem = array_shift($bytes);
+      return $this->__combineBytes($bytes) | ($elem & 0xFF) << $shift_bits;
+    }
+  }
+
+  private function __readMultiple() {
+    try {
+      // FC03
+      $bytes = $this->mb->readMultipleRegisters(1, $this->addr, $this->words);
+    }
+    catch (Exception $e) {
+      // Print error information if any
+      echo $mb;
+      echo $e;
+      return null;
+    }
+    return $bytes ;
+  }
+
+  public function readInt() {
+    $bytes = $this->__readMultiple();
+    if (empty($bytes)) { return null; }
+    return PhpType::bytes2unsignedInt($bytes);
+    #return $this->__combineBytes($bytes);
+  }
+}
+
+$plc_ip='192.168.1.154';
+$data_addr='599';
+
+$slot = new plcSlot($plc_ip, $data_addr, 1);
+$v = $slot->readInt();
+var_dump($v);
+?>

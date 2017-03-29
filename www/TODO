@@ -1,0 +1,4 @@
+* crear un sistema de menu, ver si se puede usar Symfony CMF o KnpMenuBundle
+* hacer los headers de tabla resistente al scroll mientras hay datos
+* crear abm para slots, plc
+* implementar exportacion de datos a xls

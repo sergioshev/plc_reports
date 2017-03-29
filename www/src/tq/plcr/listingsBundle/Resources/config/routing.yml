@@ -1,0 +1,15 @@
+tqplcrlistings_lastread:
+    path:     /listings/lastread
+    defaults: { _controller: tqplcrlistingsBundle:Default:lastread }
+
+#tqplcrlistings_reads:
+#    path:     /listings/reads
+#    defaults: { _controller: tqplcrlistingsBundle:Default:reads}
+
+tqplcrlistings_readsquery:
+    path:     /listings/readsquery
+    defaults: { _controller: tqplcrlistingsBundle:Default:readsQuery }
+
+tqplcrlistings_generatexls:
+    path:     /generatexls/{dql_filter}
+    defaults: { _controller: tqplcrlistingsBundle:Default:generateReadsXLS }

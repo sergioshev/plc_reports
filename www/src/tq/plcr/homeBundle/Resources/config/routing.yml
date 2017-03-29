@@ -1,0 +1,4 @@
+tqplcrhome_homepage:
+    path:     /
+    #defaults: { _controller: tqplcrhomeBundle:Default:index }
+    defaults: { _controller: tqplcrlistingsBundle:Default:global }

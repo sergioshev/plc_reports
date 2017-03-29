@@ -1,0 +1,152 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+#pagecontainer {
+  width: 100%;
+}
+
+#headercontainer {
+  background: #010410;
+  width: 100%;
+  height:200px;
+}
+
+#headercontainer img {
+  position: relative;
+  padding-left: 40px;
+  left: 50px;
+  top: 25px;
+}
+
+#maincontainer {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  position: relative;
+  clear: both;
+}
+
+#lsidebar {
+  position: absolute;
+  width: 15%;
+  height: 100%;
+  background: #010410;
+}
+
+#centralcontainer {
+  position: relative;
+  width: 70%;
+  margin: 0px auto;
+}
+
+#rsidebar {
+  position: absolute;
+  right: 0;
+  width: 15%;
+  height: 100%;
+  background: #010410;
+}
+
+#menu {
+  width: 100%;
+  height: 38px;
+  right:0;
+  position: relative;
+  background: #2e6bc8 url("/plcr/img/menu/ur-corner.gif") no-repeat right top;
+  clear: both;
+}
+
+#menu_l {
+  width: 95%;
+  height: 38px;
+  top: 0;
+  left: 0;
+  background: #2e6bc8 url("/plcr/img/menu/ul-corner.jpg") no-repeat left top;
+  position: relative;
+}
+
+#bodycontainer {
+  padding: 0px;
+  width: 100%;
+}
+
+#bodycontent {
+  width: 95%;
+  height: 90%;
+  margin: 0px auto;
+}
+
+#footer {
+  margin: 0;
+  width: 100%;
+  height: 1em;
+  font-family: "Courier New", monospace;
+  font-weight: bold;
+  text-align: center;
+  background-color: #F7F7F7;
+  position: fixed;
+  bottom:0;
+  left: 0;
+}
+
+#footer p {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+@media print {
+  img {
+    display: none;
+  }
+
+  .filters {
+    display: none;
+  }
+
+  #headercontainer {
+    display: none;
+  }
+
+  #lsidebar {
+    display: none;
+  }
+
+  #rsidebar {
+    display: none;
+  }
+
+  #footer {
+    display: none;
+  }
+
+  #menu {
+    display: none;
+  }
+
+  #centralcontainer {
+    width: 100%;
+    margin: 0;
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+
+  .nonprintable {
+    display: none;
+  }
+
+  #printable {
+   display: block;
+   width: 98%;
+   margin: 0 auto;
+  }
+
+  #bodycontent {
+    width: 100%;
+    height: auto;
+    margin: 0;
+  }
+}

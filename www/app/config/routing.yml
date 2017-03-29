@@ -1,0 +1,12 @@
+tqplcrhome:
+    resource: "@tqplcrhomeBundle/Resources/config/routing.yml"
+    prefix:   /
+
+tqplcrlistings:
+    resource: "@tqplcrlistingsBundle/Resources/config/routing.yml"
+    prefix:   /
+
+tqplcrabout:
+    resource: "@tqplcraboutBundle/Resources/config/routing.yml"
+    prefix:   /
+

@@ -1,0 +1,105 @@
+<?php
+# vim:syntax=php
+  require_once('<%%PHP_MODBUS_LIB%%>/ModbusMaster.php');
+  require_once('<%%PHP_MODBUS_LIB%%>/PhpType.php');
+  require_once('<%%ROOT_DIR%%>/scripts/pgconfig.php');
+  require_once('<%%ROOT_DIR%%>/scripts/slotReader.php');
+
+  function connect() {
+    global $CONFIG;
+    $connStr="host=".$CONFIG['DBHOST'];
+    $connStr.=" port=".$CONFIG['DBPORT'];
+    $connStr.=" dbname=".$CONFIG['DBNAME'];
+    $connStr.=" user=".$CONFIG['DBUSER'];
+    $connStr.=" password=".$CONFIG['DBPASS'];
+
+    $db = pg_connect($connStr);
+    if ($db == false) {
+      echo "ERROR conectandose a la base de datos.\n";
+      return false;
+    }
+    return $db;
+  }
+
+  function prepareSql($db) {
+    $sql = 'select * from maestro;';
+    $sth = pg_prepare($db, 'getMasters', $sql);
+    if (!$sth) { echo "No se preparo getMasters\n" ; }
+
+    $sql = "select * from slot where mid=$1;";
+    $sth = pg_prepare($db, 'getMasterSlots', $sql);
+    if (!$sth) { echo "No se preparo getMasterSlots\n" ; }
+
+    $sql = "insert into lectura (mid, sid, valor) values ($1, $2, $3);";
+    $sth = pg_prepare($db, 'insertSlotData', $sql);
+    if (!$sth) { echo "No se preparo insertSlotData\n" ; }
+  }
+
+  function getMasters($db) {
+    $masters = array();
+    $sql = 'select * from maestro;';
+    $r = pg_execute($db, 'getMasters', array());
+    if (! $r) { return false; }
+    $data = pg_fetch_all($r);
+    foreach ($data as $master) {
+      foreach ($master as $column => $value) {
+        $masters[$master['id']][$column]=$value;
+      }
+    }
+    return $masters;
+  }
+
+  function getMasterSlots($db, $mid) {
+    $slots = array();
+    $mid = preg_replace("/'/", "''", $mid);
+    $r = pg_execute($db, 'getMasterSlots', array($mid));
+    if (! $r) { return false; }
+    $data = pg_fetch_all($r);
+    foreach ($data as $slot) {
+      foreach ($slot as $column => $value) {
+        $slots[$slot['id']][$column]=$value;
+      }
+    }
+    return $slots;
+  }
+
+
+  function storeSlotData($db, $mid, $sid, $value) {
+    $r = pg_execute($db, 'insertSlotData', array($mid, $sid, $value));
+    if (! $r) { return false; }
+    return true;
+  }
+
+  $db = connect();
+  if (! $db) { exit(1); }
+  prepareSql($db);
+
+  $masters = getMasters($db);
+  foreach ($masters as $mid => $master_data) {
+    $masters[$mid]['slots'] = getMasterSlots($db, $mid);
+  }
+
+#  var_dump($masters);
+  foreach ($masters as $mid => $master_data) {
+    $slot = new plcSlot($master_data['host']);
+    echo "Procesando master [".$master_data['host']."] mid=$mid.\n";
+    foreach ($master_data['slots'] as $sid => $slot_data) {
+      echo "  Leyendo simbolo [".$slot_data['simbolo']."] dir=".
+        $slot_data['direccion']." palabra(s)=".$slot_data['words'];
+      $slot->setSlot($slot_data['direccion'], $slot_data['words']);
+      $value = $slot->readInt();
+      if (!is_null($value)) {
+        echo " valor=$value";
+        if (storeSlotData($db, $mid, $sid, $value)) {
+          echo " Alamacenado.";
+        } else {
+          echo " NO ALMACENADO.";
+        }
+      } else {
+        echo " No hay valor";
+      }
+      echo "\n";
+    }
+  }
+  pg_close($db);
+?>

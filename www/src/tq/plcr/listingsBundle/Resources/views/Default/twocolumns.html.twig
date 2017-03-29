@@ -1,0 +1,43 @@
+{#el llamador de este template tienen que tener definidas las lecturas#}
+  {% set dataset1 = lecturas|slice(0, (lecturas|length/2)|round(0,'ceil')) %}
+  {% set dataset2 = lecturas|slice((lecturas|length/2)|round(0,'ceil'), (lecturas|length/2)|round(0,'floor')) %}
+  <div id="printable">
+    {% if lecturas|length > 0 %}
+      <div id="column-container">
+        {% if dataset1|length > 0 %}
+          <div id="column1">
+            <div class="row listtableheader">
+              <div>Simbolo</div>
+              <div>Fecha</div>
+              <div>Hs</div>
+            </div>
+            {% for lectura in dataset1 %}
+              <div class="row {{ cycle(['odd', 'even'], loop.index0) }}">
+                <div>{{ lectura.simbolo }}</div>
+                <div>{{ lectura.fecha }}</div>
+                <div>{{ lectura.intervalo }}</div>
+              </div> 
+            {% endfor %}
+          </div>
+        {% endif %}
+        {% if dataset2|length > 0 %}
+          <div id="column2">
+            <div class="row listtableheader">
+              <div>Simbolo</div>
+              <div>Fecha</div>
+              <div>Hs</div>
+            </div>
+            {% for lectura in dataset2 %}
+              <div class="row {{ cycle(['odd', 'even'], loop.index0) }}">
+                <div>{{ lectura.simbolo }}</div>
+                <div>{{ lectura.fecha }}</div>
+                <div>{{ lectura.intervalo }}</div>
+              </div> 
+            {% endfor %}
+          </div>
+        {% endif %}
+        <div style="clear:both;"></div>
+      </div>
+    {% endif %}
+  </div>
+

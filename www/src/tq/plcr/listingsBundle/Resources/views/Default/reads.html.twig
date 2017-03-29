@@ -1,0 +1,33 @@
+{% extends "tqplcrlistingsBundle:Default:base_list.html.twig" %}
+{% block list_title %}
+Listado: {{ listname }}
+{% endblock %}
+{% block list_desc %}
+{{ list_desc }}
+{% endblock %}
+{% block list_data %}
+<table class="listtable">
+ <tr class="listtableheader">
+   <th>mid</th>
+   <th>sid</th>
+   <th>Host</th>
+   <th>Simbolo</th>
+   <th>Fecha</th>
+   <th>Valor</th>
+   <th>Intervalo</th>
+   <th>Delta</th>
+ </tr>
+{% for lectura in lecturas %}
+  <tr class="{{ cycle(['odd', 'even'], loop.index0) }}">
+    <td>{{ lectura.mid }}</td>
+    <td>{{ lectura.sid }}</td>
+    <td>{{ lectura.host }}</td>
+    <td>{{ lectura.simbolo }}</td>
+    <td>{{ lectura.fecha }}</td>
+    <td>{{ lectura.valor }}</td>
+    <td>{{ lectura.intervalo }}</td>
+    <td>{{ lectura.delta }}</td>
+  </tr> 
+{% endfor %}
+</table>
+{% endblock %}

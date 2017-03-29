@@ -1,0 +1,34 @@
+{%- macro custom_div_style() -%}
+ style="max-width:350px; padding: 2px 0;"
+{%- endmacro -%}
+{{ form_start(filter_slice) }}
+<div class="filters">
+  <div {{ _self.custom_div_style() }}>
+    {{ form_label(filter_slice.dateFrom) }}
+    {{ form_errors(filter_slice.dateFrom) }}
+    {{ form_widget(filter_slice.dateFrom, {'attr' : { 'style': 'float: right;'}}) }}
+    <div style="clear:both;"></div>
+  </div> 
+  <div {{ _self.custom_div_style() }}>
+    {{ form_label(filter_slice.dateTo) }}
+    {{ form_errors(filter_slice.dateTo) }}
+    {{ form_widget(filter_slice.dateTo, {'attr' : { 'style': 'float: right;'}}) }}
+    <div style="clear:both;"></div>
+  </div>
+  <div {{ _self.custom_div_style() }}>
+    {{ form_label(filter_slice.slotName) }}
+    {{ form_errors(filter_slice.slotName) }}
+    {{ form_widget(filter_slice.slotName, {'attr' : { 'style': 'float: right;width:200px;'}}) }}
+    <div style="clear:both;"></div>
+  </div>
+  <div {{ _self.custom_div_style() }}>
+    {{ form_row(filter_slice.submit) }}
+    {% if dql_filter %}
+      <div {{ _self.custom_div_style() }}>
+        <a href="{{ path('tqplcrlistings_generatexls', {'dql_filter' : dql_filter })|e('html') }}">Exportar a XLS</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{{ form_rest(filter_slice) }}
+{{ form_end(filter_slice) }} 

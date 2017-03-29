@@ -1,0 +1,47 @@
+  #column-container {
+    display: table;
+    border: 1px solid black;
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    text-align: left;
+  }
+
+  #column1 {
+    float: left;
+    border-right: solid 1px gray;
+  }
+ 
+  #column2 {
+    border-left: solid 1px gray;
+    float: left;
+  }
+
+  .row.listtableheader {
+    font-weight: bold;
+    background-color: lightgray;
+  }
+
+  .row.listtableheader > div {
+    display: inline-block;
+    padding: 1px 2px 1px 0px;
+  }
+
+  .row > div {
+    display: inline-block;
+    padding: 1px 2px 1px 0px;
+  }
+
+  .odd {
+    background-color: #FFFFCC;
+  }
+
+  .even {
+    background-color: #E6E6B8;
+  }
+
+  .row {
+    display: block;
+    width: 86mm;
+    border-bottom: solid 1px gray;
+  }
+

@@ -1,0 +1,69 @@
+# vim: syntax=php
+<?php
+require_once('<%%PHP_MODBUS_LIB%%>/ModbusMaster.php');
+require_once('<%%PHP_MODBUS_LIB%%>/PhpType.php');
+
+class plcSlot {
+  private $host = null;
+  private $addr = null;
+  private $words = 0;
+  private $mb = null;
+
+  function __construct($host=null, $addr=null, $words=0) {
+    $this->host = $host;
+    $this->addr = $addr;
+    $this->words = $words;
+    if (!empty($host)) {
+      try {
+        $this->mb = new ModbusMaster($host, "TCP");
+        $this->mb->connect();
+        $this->mb->disconnect();
+      } catch (Exception $e) {
+        $this->mb = null;
+      }
+    }
+  }
+
+  function __destruct() {
+  }
+
+  private function __combineBytes($bytes) {
+    if (empty($bytes)) {
+      return 0;
+    } else {
+      $shift_bits = (count($bytes)-1)*8;
+      $elem = array_shift($bytes);
+      return $this->__combineBytes($bytes) | ($elem & 0xFF) << $shift_bits;
+    }
+  }
+
+  private function __readMultiple() {
+    if (is_null($this->mb)) {
+      return null ;
+    }
+    try {
+      // FC03
+      $bytes = $this->mb->readMultipleRegisters(1, $this->addr, $this->words);
+    }
+    catch (Exception $e) {
+      // Print error information if any
+      #echo $this->mb;
+      #echo $e;
+      return null;
+    }
+    return $bytes ;
+  }
+
+  public function setSlot($addr, $words) {
+    $this->addr = $addr;
+    $this->words = $words;
+  }
+
+  public function readInt() {
+    $bytes = $this->__readMultiple();
+    if (empty($bytes)) { return null; }
+    return PhpType::bytes2unsignedInt($bytes);
+    #return $this->__combineBytes($bytes);
+  }
+}
+?>
